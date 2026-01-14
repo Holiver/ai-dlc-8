@@ -2,6 +2,30 @@
 
 一个基于 Web 的员工福利电商平台，员工可以使用积分兑换产品。
 
+**项目状态：✅ 100% 完成，可以交付使用**
+
+## 📚 完整文档导航
+
+### 🚀 快速开始
+- **[快速启动指南](QUICK_START_GUIDE.md)** - 详细的启动步骤和配置说明
+- **[用户手册](USER_MANUAL.md)** - 员工端和管理员端完整使用指南
+
+### 🧪 测试和部署
+- **[测试清单](TESTING_CHECKLIST.md)** - 19 个详细测试用例和测试指南
+- **[部署指南](DEPLOYMENT_GUIDE.md)** - Docker 和手动部署的完整方案
+
+### 📊 项目总结
+- **[项目完成总结](PROJECT_COMPLETION_SUMMARY.md)** - 项目完成情况总览（推荐阅读）
+- **[项目交付总结](PROJECT_DELIVERY_SUMMARY.md)** - 详细的交付清单和统计
+- **[当前进度](CURRENT_PROGRESS.md)** - 各阶段完成情况
+
+### 📖 开发文档
+- **[需求文档](.kiro/specs/awsome-shop/requirements.md)** - 19 个功能需求详细说明
+- **[设计文档](.kiro/specs/awsome-shop/design.md)** - 架构设计和 C4 模型
+- **[任务列表](.kiro/specs/awsome-shop/tasks.md)** - 7 个阶段的实施计划
+
+---
+
 ## 技术栈
 
 ### 后端

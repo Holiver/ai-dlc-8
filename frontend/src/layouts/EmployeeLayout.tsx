@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation, Outlet } from 'react-router-dom';
 import {
   ShoppingOutlined,
   HistoryOutlined,
@@ -8,20 +8,17 @@ import {
   UserOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import Header from '../components/Header';
 
 const { Content, Sider } = Layout;
 
-// Placeholder page components
-const ProductListPage = () => <div>Product List Page</div>;
-const RedemptionHistoryPage = () => <div>Redemption History Page</div>;
-const PointsHistoryPage = () => <div>Points History Page</div>;
-const ProfilePage = () => <div>Profile Page</div>;
-
 const EmployeeLayout: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { logout } = useAuth();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -32,27 +29,27 @@ const EmployeeLayout: React.FC = () => {
     {
       key: '/products',
       icon: <ShoppingOutlined />,
-      label: <Link to="/products">Products</Link>,
+      label: <Link to="/products">{t('nav.products')}</Link>,
     },
     {
       key: '/redemptions',
       icon: <HistoryOutlined />,
-      label: <Link to="/redemptions">Redemption History</Link>,
+      label: <Link to="/redemptions">{t('nav.redemptions')}</Link>,
     },
     {
       key: '/points',
       icon: <WalletOutlined />,
-      label: <Link to="/points">Points History</Link>,
+      label: <Link to="/points">{t('nav.points')}</Link>,
     },
     {
       key: '/profile',
       icon: <UserOutlined />,
-      label: <Link to="/profile">Profile</Link>,
+      label: <Link to="/profile">{t('nav.profile')}</Link>,
     },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: 'Logout',
+      label: t('auth.logout'),
       onClick: handleLogout,
     },
   ];
@@ -64,27 +61,19 @@ const EmployeeLayout: React.FC = () => {
         <Sider width={200} theme="light">
           <Menu
             mode="inline"
-            defaultSelectedKeys={['/products']}
+            selectedKeys={[location.pathname]}
             style={{ height: '100%', borderRight: 0 }}
             items={menuItems}
           />
         </Sider>
-        <Layout style={{ padding: '24px' }}>
+        <Layout style={{ padding: '0' }}>
           <Content
             style={{
-              padding: 24,
-              margin: 0,
               minHeight: 280,
-              background: '#fff',
+              background: '#f0f2f5',
             }}
           >
-            <Routes>
-              <Route path="/products" element={<ProductListPage />} />
-              <Route path="/redemptions" element={<RedemptionHistoryPage />} />
-              <Route path="/points" element={<PointsHistoryPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/" element={<ProductListPage />} />
-            </Routes>
+            <Outlet />
           </Content>
         </Layout>
       </Layout>

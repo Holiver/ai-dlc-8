@@ -13,7 +13,16 @@
     "loading": "加载中...",
     "success": "操作成功",
     "error": "操作失败",
-    "noData": "暂无数据"
+    "noData": "暂无数据",
+    "clear": "清空",
+    "showExample": "显示示例",
+    "hideExample": "隐藏示例",
+    "exampleFormat": "示例格式",
+    "enterMarkdownTable": "请输入 Markdown 表格格式的数据",
+    "amount": "数量",
+    "reason": "原因",
+    "time": "时间",
+    "action": "操作"
   },
   "auth": {
     "login": "登录",
@@ -52,17 +61,25 @@
     "insufficientPoints": "积分不足",
     "insufficientStock": "库存不足"
   },
-  "points": "积分",
-  "pointsBalance": "积分余额",
-  "pointsHistory": "积分历史",
+  "points": {
+    "title": "积分",
+    "balance": "积分余额",
+    "history": "积分历史",
+    "transaction": "积分交易",
+    "grant": "发放",
+    "deduct": "扣除",
+    "redemption": "兑换消耗"
+  },
   "redemptionHistory": "兑换历史",
   "order": {
     "orderNumber": "订单号",
     "productName": "产品名称",
     "pointsCost": "消耗积分",
-    "status": "订单状态",
-    "preparing": "备货中",
-    "delivered": "已发放",
+    "status": {
+      "label": "订单状态",
+      "preparing": "备货中",
+      "delivered": "已发放"
+    },
     "createdAt": "兑换时间"
   },
   "user": {

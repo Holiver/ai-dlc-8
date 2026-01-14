@@ -13,7 +13,16 @@
     "loading": "Loading...",
     "success": "Operation successful",
     "error": "Operation failed",
-    "noData": "No data available"
+    "noData": "No data available",
+    "clear": "Clear",
+    "showExample": "Show Example",
+    "hideExample": "Hide Example",
+    "exampleFormat": "Example Format",
+    "enterMarkdownTable": "Please enter data in Markdown table format",
+    "amount": "Amount",
+    "reason": "Reason",
+    "time": "Time",
+    "action": "Action"
   },
   "auth": {
     "login": "Login",
@@ -52,17 +61,25 @@
     "insufficientPoints": "Insufficient points",
     "insufficientStock": "Insufficient stock"
   },
-  "points": "Points",
-  "pointsBalance": "Points Balance",
-  "pointsHistory": "Points History",
+  "points": {
+    "title": "Points",
+    "balance": "Points Balance",
+    "history": "Points History",
+    "transaction": "Points Transaction",
+    "grant": "Grant",
+    "deduct": "Deduct",
+    "redemption": "Redemption Cost"
+  },
   "redemptionHistory": "Redemption History",
   "order": {
     "orderNumber": "Order Number",
     "productName": "Product Name",
     "pointsCost": "Points Cost",
-    "status": "Order Status",
-    "preparing": "Preparing",
-    "delivered": "Delivered",
+    "status": {
+      "label": "Order Status",
+      "preparing": "Preparing",
+      "delivered": "Delivered"
+    },
     "createdAt": "Created At"
   },
   "user": {

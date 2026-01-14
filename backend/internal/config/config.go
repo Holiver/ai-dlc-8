@@ -29,8 +29,8 @@ type DatabaseConfig struct {
 
 // JWTConfig holds JWT configuration
 type JWTConfig struct {
-	Secret      string
-	ExpireHours int
+	Secret          string
+	ExpirationHours int
 }
 
 // Load loads configuration from file and environment variables

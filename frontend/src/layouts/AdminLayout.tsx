@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation, Outlet } from 'react-router-dom';
 import {
   DashboardOutlined,
   UserOutlined,
@@ -10,22 +10,17 @@ import {
   BarChartOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import Header from '../components/Header';
 
 const { Content, Sider } = Layout;
 
-// Placeholder page components
-const AdminDashboardPage = () => <div>Admin Dashboard Page</div>;
-const AdminUserManagementPage = () => <div>User Management Page</div>;
-const AdminProductManagementPage = () => <div>Product Management Page</div>;
-const AdminPointsManagementPage = () => <div>Points Management Page</div>;
-const AdminOrderManagementPage = () => <div>Order Management Page</div>;
-const AdminReportsPage = () => <div>Reports Page</div>;
-
 const AdminLayout: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { logout } = useAuth();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -36,37 +31,37 @@ const AdminLayout: React.FC = () => {
     {
       key: '/admin/dashboard',
       icon: <DashboardOutlined />,
-      label: <Link to="/admin/dashboard">Dashboard</Link>,
+      label: <Link to="/admin/dashboard">{t('nav.dashboard')}</Link>,
     },
     {
       key: '/admin/users',
       icon: <UserOutlined />,
-      label: <Link to="/admin/users">User Management</Link>,
+      label: <Link to="/admin/users">{t('nav.userManagement')}</Link>,
     },
     {
       key: '/admin/products',
       icon: <ShoppingOutlined />,
-      label: <Link to="/admin/products">Product Management</Link>,
+      label: <Link to="/admin/products">{t('nav.productManagement')}</Link>,
     },
     {
       key: '/admin/points',
       icon: <WalletOutlined />,
-      label: <Link to="/admin/points">Points Management</Link>,
+      label: <Link to="/admin/points">{t('nav.pointsManagement')}</Link>,
     },
     {
       key: '/admin/orders',
       icon: <FileTextOutlined />,
-      label: <Link to="/admin/orders">Order Management</Link>,
+      label: <Link to="/admin/orders">{t('nav.orderManagement')}</Link>,
     },
     {
       key: '/admin/reports',
       icon: <BarChartOutlined />,
-      label: <Link to="/admin/reports">Reports</Link>,
+      label: <Link to="/admin/reports">{t('nav.reports')}</Link>,
     },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: 'Logout',
+      label: t('auth.logout'),
       onClick: handleLogout,
     },
   ];
@@ -78,29 +73,19 @@ const AdminLayout: React.FC = () => {
         <Sider width={200} theme="light">
           <Menu
             mode="inline"
-            defaultSelectedKeys={['/admin/dashboard']}
+            selectedKeys={[location.pathname]}
             style={{ height: '100%', borderRight: 0 }}
             items={menuItems}
           />
         </Sider>
-        <Layout style={{ padding: '24px' }}>
+        <Layout style={{ padding: '0' }}>
           <Content
             style={{
-              padding: 24,
-              margin: 0,
               minHeight: 280,
-              background: '#fff',
+              background: '#f0f2f5',
             }}
           >
-            <Routes>
-              <Route path="/dashboard" element={<AdminDashboardPage />} />
-              <Route path="/users" element={<AdminUserManagementPage />} />
-              <Route path="/products" element={<AdminProductManagementPage />} />
-              <Route path="/points" element={<AdminPointsManagementPage />} />
-              <Route path="/orders" element={<AdminOrderManagementPage />} />
-              <Route path="/reports" element={<AdminReportsPage />} />
-              <Route path="/" element={<AdminDashboardPage />} />
-            </Routes>
+            <Outlet />
           </Content>
         </Layout>
       </Layout>

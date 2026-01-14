@@ -9,8 +9,6 @@ type Config struct {
 	Server   ServerConfig
 	Database DatabaseConfig
 	JWT      JWTConfig
-	Email    EmailConfig
-	IPGeo    IPGeoConfig
 }
 
 // ServerConfig holds server configuration
@@ -33,21 +31,6 @@ type DatabaseConfig struct {
 type JWTConfig struct {
 	Secret      string
 	ExpireHours int
-}
-
-// EmailConfig holds email configuration
-type EmailConfig struct {
-	SMTPHost string
-	SMTPPort int
-	Username string
-	Password string
-	From     string
-}
-
-// IPGeoConfig holds IP geolocation service configuration
-type IPGeoConfig struct {
-	APIKey  string
-	BaseURL string
 }
 
 // Load loads configuration from file and environment variables

@@ -10,7 +10,6 @@ AWSomeShop 是一个基于 Web 的员工福利电商系统，采用前后端分�
 - 订单处理和状态跟踪
 - 多语言支持（中英双语）
 - 管理员后台管理功能
-- 邮件通知系统
 
 系统设计遵循以下原则：
 - **简单性**：MVP 阶段专注核心功能，避免过度设计
@@ -33,13 +32,8 @@ C4Context
     
     System(awsomeShop, "AWSomeShop 系统", "员工福利电商平台，提供积分管理和产品兑换功能")
     
-    System_Ext(emailSystem, "邮件系统", "发送通知邮件（SMTP）")
-    System_Ext(ipGeoService, "IP地理位置服务", "识别用户地理位置以提供语言偏好")
-    
     Rel(employee, awsomeShop, "浏览产品、兑换商品、查看积分", "HTTPS")
     Rel(admin, awsomeShop, "管理员工、产品、积分和订单", "HTTPS")
-    Rel(awsomeShop, emailSystem, "发送通知邮件", "SMTP")
-    Rel(awsomeShop, ipGeoService, "查询IP地理位置", "HTTPS/API")
     
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
 ```
@@ -62,16 +56,11 @@ C4Container
         Container(webServer, "Web 服务器", "Nginx", "反向代理和静态资源服务")
     }
 
-    System_Ext(emailSystem, "邮件系统", "SMTP 邮件服务")
-    System_Ext(ipGeoService, "IP地理位置服务", "地理位置识别")
-
     Rel(employee, webServer, "访问系统", "HTTPS")
     Rel(admin, webServer, "管理系统", "HTTPS")
     Rel(webServer, webApp, "提供静态资源", "")
     Rel(webApp, apiApp, "调用 API", "JSON/HTTPS")
     Rel(apiApp, database, "读写数据", "SQL/TCP")
-    Rel(apiApp, emailSystem, "发送邮件", "SMTP")
-    Rel(apiApp, ipGeoService, "查询位置", "HTTPS")
     
     UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
 ```
@@ -86,8 +75,6 @@ C4Component
 
     Container(webApp, "Web 应用", "React", "前端应用")
     ContainerDb(database, "数据库", "MySQL", "数据存储")
-    System_Ext(emailSystem, "邮件系统", "发送邮件")
-    System_Ext(ipGeoService, "IP地理位置服务", "位置识别")
 
     Container_Boundary(api, "API 应用") {
         Component(authHandler, "认证处理器", "Handler", "处理登录、登出请求")
@@ -106,8 +93,6 @@ C4Component
         Component(productService, "产品服务", "Service", "产品和库存管理")
         Component(redemptionService, "兑换服务", "Service", "兑换流程和订单管理")
         Component(pointsService, "积分服务", "Service", "积分计算和交易")
-        Component(notificationService, "通知服务", "Service", "邮件通知")
-        Component(i18nService, "国际化服务", "Service", "多语言和位置识别")
         
         Component(userRepo, "用户仓储", "Repository", "用户数据访问")
         Component(productRepo, "产品仓储", "Repository", "产品数据访问")
@@ -152,12 +137,6 @@ C4Component
     Rel(orderRepo, database, "读写", "SQL")
     Rel(pointsRepo, database, "读写", "SQL")
     
-    Rel(notificationService, emailSystem, "发送邮件", "SMTP")
-    Rel(i18nService, ipGeoService, "查询位置", "HTTPS")
-    Rel(i18nMiddleware, i18nService, "使用")
-    Rel(redemptionService, notificationService, "使用")
-    Rel(pointsService, notificationService, "使用")
-    
     UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
 ```
 
@@ -189,15 +168,8 @@ graph TB
         C[(MySQL 数据库)]
     end
     
-    subgraph "外部服务"
-        D[邮件服务]
-        E[IP 地理位置服务]
-    end
-    
     A -->|HTTPS/REST| B
     B3 -->|SQL| C
-    B2 -->|SMTP| D
-    B2 -->|API| E
 ```
 
 ### 技术栈
@@ -254,8 +226,6 @@ graph TB
 - `ProductService`：产品查询、库存管理
 - `RedemptionService`：兑换流程、订单管理、库存扣减
 - `PointsService`：积分计算、积分交易记录、批量发放
-- `NotificationService`：邮件通知
-- `I18nService`：多语言支持、IP 地理位置识别
 
 #### 3. 数据访问层 (Repository Layer)
 
@@ -277,7 +247,6 @@ graph TB
 - `CORSMiddleware`：跨域请求处理
 - `LoggingMiddleware`：请求日志记录
 - `RecoveryMiddleware`：panic 恢复
-- `I18nMiddleware`：语言识别和设置
 
 ### 前端组件
 
@@ -594,7 +563,6 @@ sequenceDiagram
     participant User as 员工
     participant API as API 服务器
     participant DB as 数据库
-    participant Email as 邮件服务
     
     User->>API: 登录（邮箱、密码）
     API->>DB: 验证凭据
@@ -606,7 +574,6 @@ sequenceDiagram
         API->>DB: 创建积分交易记录
         API->>DB: 更新 is_first_login=false
         API->>DB: 提交事务
-        API->>Email: 发送积分发放通知
     end
     API-->>User: 返回 JWT token
 ```
@@ -618,7 +585,6 @@ sequenceDiagram
     participant User as 员工
     participant API as API 服务器
     participant DB as 数据库
-    participant Email as 邮件服务
     
     User->>API: 发起兑换请求
     API->>DB: 验证积分余额
@@ -630,7 +596,6 @@ sequenceDiagram
         API->>DB: 创建兑换订单
         API->>DB: 创建积分交易记录
         API->>DB: 提交事务
-        API->>Email: 发送兑换成功通知
         API-->>User: 返回订单信息
     else 验证失败
         API-->>User: 返回错误提示
@@ -645,7 +610,6 @@ sequenceDiagram
     participant API as API 服务器
     participant Parser as Markdown 解析器
     participant DB as 数据库
-    participant Email as 邮件服务
     
     Admin->>API: 提交 Markdown 表格数据
     API->>Parser: 解析 Markdown 格式
@@ -659,9 +623,6 @@ sequenceDiagram
             API->>DB: 创建积分交易记录
         end
         API->>DB: 提交事务
-        loop 每个员工
-            API->>Email: 发送积分发放通知
-        end
         API-->>Admin: 返回成功结果
     else 验证失败
         API-->>Admin: 返回错误信息（全部回滚）
@@ -675,7 +636,6 @@ sequenceDiagram
     participant Admin as 管理员
     participant API as API 服务器
     participant DB as 数据库
-    participant Email as 邮件服务
     
     Admin->>API: 提交订单号列表
     API->>DB: 查询所有订单
@@ -684,9 +644,6 @@ sequenceDiagram
         API->>DB: 更新订单状态为"已发放"
     end
     API->>DB: 提交事务
-    loop 每个订单
-        API->>Email: 发送发货通知
-    end
     API-->>Admin: 返回更新结果
 ```
 

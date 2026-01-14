@@ -51,16 +51,7 @@
   - 实现员工端和管理员端路由分离
   - _需求: 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14_
 
-- [ ] 1.6 配置国际化（i18n）
-  - 配置 react-i18next
-  - 创建中英文语言资源文件结构
-  - 实现语言切换功能
-  - 实现基于 IP 的默认语言识别（集成 IP 地理位置服务）
-  - _需求: 15_
-
-### [并行组 1C] - 部署基础设施
-
-- [ ] 1.7 配置 Docker 容器化
+- [ ] 1.6 配置 Docker 容器化
   - 创建后端 Dockerfile
   - 创建前端 Dockerfile
   - 创建 docker-compose.yml（包含 MySQL, 后端, 前端, Nginx）
@@ -68,7 +59,7 @@
   - _需求: 所有需求的部署基础_
 
 ### 检查点 1
-- [ ] 1.8 验证基础设施
+- [ ] 1.7 验证基础设施
   - 确保所有依赖正确安装
   - 确保数据库迁移成功执行
   - 确保前后端项目可以正常启动
@@ -154,7 +145,17 @@
   - 实现批量导入产品（Markdown 表格解析）
   - _需求: 3, 9, 13_
 
-### [并行组 3C] - 积分服务
+### [并行组 3C] - 兑换服务
+
+- [ ] 3.5 实现 RedemptionService
+  - 实现兑换流程（积分验证、库存验证、事务处理）
+  - 实现订单号生成
+  - 实现兑换历史查询
+  - 实现订单状态更新（单个和批量）
+  - 实现兑换统计报表
+  - _需求: 4, 6, 12, 14_
+
+### [并行组 3D] - 积分服务
 
 - [ ] 3.4 实现 PointsService
   - 实现积分发放（单个员工）
@@ -165,8 +166,6 @@
   - 实现积分统计报表
   - _需求: 5, 7, 10, 11, 14, 19_
 
-### [并行组 3D] - 兑换服务
-
 - [ ] 3.5 实现 RedemptionService
   - 实现兑换流程（积分验证、库存验证、事务处理）
   - 实现订单号生成
@@ -175,24 +174,8 @@
   - 实现兑换统计报表
   - _需求: 4, 6, 12, 14_
 
-### [并行组 3E] - 通知和国际化服务
-
-- [ ] 3.6 实现 NotificationService
-  - 配置 SMTP 邮件客户端
-  - 实现兑换成功通知邮件
-  - 实现发货通知邮件
-  - 实现积分发放通知邮件
-  - 实现邮件发送失败处理
-  - _需求: 8_
-
-- [ ] 3.7 实现 I18nService
-  - 集成 IP 地理位置服务 API
-  - 实现基于 IP 的语言识别
-  - 实现语言偏好存储和读取
-  - _需求: 15_
-
 ### 检查点 3
-- [ ] 3.8 验证服务层
+- [ ] 3.6 验证服务层
   - 编写并运行服务层单元测试
   - 确保所有业务逻辑正确实现
   - 确保事务处理正确（积分和库存一致性）
@@ -214,12 +197,7 @@
   - 实现未授权请求拦截
   - _需求: 1, 9, 10, 11, 12, 13, 14_
 
-- [ ] 4.3 实现国际化中间件（I18nMiddleware）
-  - 实现语言识别（IP 或请求头）
-  - 实现语言上下文设置
-  - _需求: 15_
-
-- [ ] 4.4 实现通用中间件
+- [ ] 4.3 实现通用中间件
   - 实现 CORS 中间件
   - 实现日志中间件
   - 实现 Panic 恢复中间件
@@ -227,68 +205,68 @@
 
 ### [并行组 4B] - 认证和用户 API
 
-- [ ] 4.5 实现 AuthHandler
+- [ ] 4.4 实现 AuthHandler
   - POST /api/v1/auth/login（登录）
   - POST /api/v1/auth/logout（登出）
   - GET /api/v1/auth/me（获取当前用户信息）
   - _需求: 2_
 
-- [ ] 4.6 实现 UserHandler
+- [ ] 4.5 实现 UserHandler
   - GET /api/v1/users/profile（获取个人信息）
   - PUT /api/v1/users/phone（修改手机号）
   - _需求: 1_
 
 ### [并行组 4C] - 产品和兑换 API
 
-- [ ] 4.7 实现 ProductHandler
+- [ ] 4.6 实现 ProductHandler
   - GET /api/v1/products（获取产品列表）
   - _需求: 3_
 
-- [ ] 4.8 实现 RedemptionHandler
+- [ ] 4.7 实现 RedemptionHandler
   - POST /api/v1/redemptions（创建兑换订单）
   - GET /api/v1/redemptions（获取兑换历史）
   - _需求: 4, 6_
 
 ### [并行组 4D] - 积分 API
 
-- [ ] 4.9 实现 PointsHandler
+- [ ] 4.8 实现 PointsHandler
   - GET /api/v1/points/balance（获取积分余额）
   - GET /api/v1/points/transactions（获取积分交易历史）
   - _需求: 5, 7_
 
 ### [并行组 4E] - 管理员 API
 
-- [ ] 4.10 实现 AdminUserHandler
+- [ ] 4.9 实现 AdminUserHandler
   - POST /api/v1/admin/users（创建员工账户）
   - PUT /api/v1/admin/users/:id/status（设置员工离职状态）
   - _需求: 1_
 
-- [ ] 4.11 实现 AdminProductHandler
+- [ ] 4.10 实现 AdminProductHandler
   - POST /api/v1/admin/products（创建产品）
   - PUT /api/v1/admin/products/:id（更新产品）
   - PUT /api/v1/admin/products/:id/status（上下架产品）
   - POST /api/v1/admin/products/batch（批量导入产品）
   - _需求: 9, 13_
 
-- [ ] 4.12 实现 AdminPointsHandler
+- [ ] 4.11 实现 AdminPointsHandler
   - POST /api/v1/admin/points/grant（发放积分）
   - POST /api/v1/admin/points/deduct（扣除积分）
   - POST /api/v1/admin/points/batch-grant（批量发放积分）
   - _需求: 10, 11_
 
-- [ ] 4.13 实现 AdminOrderHandler
+- [ ] 4.12 实现 AdminOrderHandler
   - GET /api/v1/admin/orders（获取所有订单）
   - PUT /api/v1/admin/orders/batch-status（批量更新订单状态）
   - _需求: 12_
 
-- [ ] 4.14 实现 AdminReportHandler
+- [ ] 4.13 实现 AdminReportHandler
   - GET /api/v1/admin/reports/points-grants（积分发放表）
   - GET /api/v1/admin/reports/points-balances（积分存量表）
   - GET /api/v1/admin/reports/redemptions（兑换记录表）
   - _需求: 14_
 
 ### 检查点 4
-- [ ] 4.15 验证 API 层
+- [ ] 4.14 验证 API 层
   - 使用 Postman 或类似工具测试所有 API 端点
   - 确保认证和授权正确工作
   - 确保错误处理正确实现
@@ -420,30 +398,23 @@
   - 优化数据库查询和索引
   - _需求: 17_
 
-- [ ] 6.4 邮件通知测试
-  - 测试兑换成功通知
-  - 测试发货通知
-  - 测试积分发放通知
-  - 测试邮件发送失败处理
-  - _需求: 8_
-
 ### [串行任务] - 安全和错误处理
 
-- [ ] 6.5 安全测试
+- [ ] 6.4 安全测试
   - 测试 JWT 认证和授权
   - 测试 SQL 注入防护
   - 测试 XSS 防护
   - 测试 CSRF 防护
   - _需求: 2, 所有管理员需求_
 
-- [ ] 6.6 错误处理测试
+- [ ] 6.5 错误处理测试
   - 测试所有错误场景的提示信息
   - 测试数据验证和边界条件
   - 测试事务回滚
   - _需求: 所有需求_
 
 ### 检查点 6
-- [ ] 6.7 最终验证
+- [ ] 6.6 最终验证
   - 确保所有需求都已实现
   - 确保所有测试通过
   - 确保系统性能达标
@@ -498,13 +469,13 @@
 
 ## 并行执行策略总结
 
-### 阶段 1：3 个并行组（1A, 1B, 1C）
-- 后端基础设施、前端基础设施、部署基础设施可以同时进行
+### 阶段 1：2 个并行组（1A, 1B）
+- 后端基础设施和前端基础设施可以同时进行
 
 ### 阶段 2：2 个并行组（2A, 2B）
 - 数据模型定义和仓储层实现可以同时进行
 
-### 阶段 3：5 个并行组（3A, 3B, 3C, 3D, 3E）
+### 阶段 3：4 个并行组（3A, 3B, 3C, 3D）
 - 所有服务层组件相互独立，可以完全并行开发
 
 ### 阶段 4：5 个并行组（4A, 4B, 4C, 4D, 4E）

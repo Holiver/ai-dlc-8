@@ -13,14 +13,3 @@ database:
 jwt:
   secret: "your-secret-key-change-in-production"
   expirehours: 24
-
-email:
-  smtphost: "smtp.example.com"
-  smtpport: 587
-  username: "noreply@example.com"
-  password: "email-password"
-  from: "AWSomeShop <noreply@example.com>"
-
-ipgeo:
-  apikey: "your-ipgeo-api-key"
-  baseurl: "https://api.ipgeolocation.io"

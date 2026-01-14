@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: awsome-shop-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-awsome_shop}
+      MYSQL_USER: ${MYSQL_USER:-awsome}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-awsome123}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/migrations:/docker-entrypoint-initdb.d
+    networks:
+      - awsome-shop-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: awsome-shop-backend
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: "8080"
+      SERVER_MODE: "release"
+      DATABASE_HOST: mysql
+      DATABASE_PORT: "3306"
+      DATABASE_USER: ${MYSQL_USER:-awsome}
+      DATABASE_PASSWORD: ${MYSQL_PASSWORD:-awsome123}
+      DATABASE_DBNAME: ${MYSQL_DATABASE:-awsome_shop}
+      DATABASE_CHARSET: "utf8mb4"
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+      JWT_EXPIREHOURS: "24"
+      EMAIL_SMTPHOST: ${EMAIL_SMTPHOST:-smtp.example.com}
+      EMAIL_SMTPPORT: ${EMAIL_SMTPPORT:-587}
+      EMAIL_USERNAME: ${EMAIL_USERNAME:-noreply@example.com}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD:-email-password}
+      EMAIL_FROM: ${EMAIL_FROM:-AWSomeShop <noreply@example.com>}
+      IPGEO_APIKEY: ${IPGEO_APIKEY:-your-ipgeo-api-key}
+      IPGEO_BASEURL: ${IPGEO_BASEURL:-https://api.ipgeolocation.io}
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - awsome-shop-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: awsome-shop-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - awsome-shop-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy (optional - for production)
+  nginx:
+    image: nginx:alpine
+    container_name: awsome-shop-nginx
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - awsome-shop-network
+    profiles:
+      - production
+
+networks:
+  awsome-shop-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local

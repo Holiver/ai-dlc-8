@@ -20,7 +20,148 @@ AWSomeShop 是一个基于 Web 的员工福利电商系统，采用前后端分�
 
 ## 架构
 
-### 系统架构
+### C1: 系统上下文图（System Context）
+
+展示AWSomeShop系统与外部用户和系统的交互关系。
+
+```mermaid
+C4Context
+    title 系统上下文图 - AWSomeShop 员工福利电商系统
+
+    Person(employee, "员工", "使用积分兑换福利产品的公司员工")
+    Person(admin, "管理员", "管理员工账户、产品和积分的系统管理员")
+    
+    System(awsomeShop, "AWSomeShop 系统", "员工福利电商平台，提供积分管理和产品兑换功能")
+    
+    System_Ext(emailSystem, "邮件系统", "发送通知邮件（SMTP）")
+    System_Ext(ipGeoService, "IP地理位置服务", "识别用户地理位置以提供语言偏好")
+    
+    Rel(employee, awsomeShop, "浏览产品、兑换商品、查看积分", "HTTPS")
+    Rel(admin, awsomeShop, "管理员工、产品、积分和订单", "HTTPS")
+    Rel(awsomeShop, emailSystem, "发送通知邮件", "SMTP")
+    Rel(awsomeShop, ipGeoService, "查询IP地理位置", "HTTPS/API")
+    
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+```
+
+### C2: 容器图（Container Diagram）
+
+展示系统内的主要技术容器及其交互关系。
+
+```mermaid
+C4Container
+    title 容器图 - AWSomeShop 系统架构
+
+    Person(employee, "员工", "使用积分兑换福利产品")
+    Person(admin, "管理员", "管理系统数据")
+
+    Container_Boundary(c1, "AWSomeShop 系统") {
+        Container(webApp, "Web 应用", "React 18+", "提供员工和管理员界面，支持响应式设计和多语言")
+        Container(apiApp, "API 应用", "Go + Gin", "提供 RESTful API，处理业务逻辑和数据访问")
+        ContainerDb(database, "数据库", "MySQL 8.0+", "存储用户、产品、订单和积分交易数据")
+        Container(webServer, "Web 服务器", "Nginx", "反向代理和静态资源服务")
+    }
+
+    System_Ext(emailSystem, "邮件系统", "SMTP 邮件服务")
+    System_Ext(ipGeoService, "IP地理位置服务", "地理位置识别")
+
+    Rel(employee, webServer, "访问系统", "HTTPS")
+    Rel(admin, webServer, "管理系统", "HTTPS")
+    Rel(webServer, webApp, "提供静态资源", "")
+    Rel(webApp, apiApp, "调用 API", "JSON/HTTPS")
+    Rel(apiApp, database, "读写数据", "SQL/TCP")
+    Rel(apiApp, emailSystem, "发送邮件", "SMTP")
+    Rel(apiApp, ipGeoService, "查询位置", "HTTPS")
+    
+    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
+```
+
+### C3: 组件图（Component Diagram）
+
+展示API应用容器内的主要组件及其职责。
+
+```mermaid
+C4Component
+    title 组件图 - API 应用内部结构
+
+    Container(webApp, "Web 应用", "React", "前端应用")
+    ContainerDb(database, "数据库", "MySQL", "数据存储")
+    System_Ext(emailSystem, "邮件系统", "发送邮件")
+    System_Ext(ipGeoService, "IP地理位置服务", "位置识别")
+
+    Container_Boundary(api, "API 应用") {
+        Component(authHandler, "认证处理器", "Handler", "处理登录、登出请求")
+        Component(userHandler, "用户处理器", "Handler", "处理用户信息管理")
+        Component(productHandler, "产品处理器", "Handler", "处理产品浏览")
+        Component(redemptionHandler, "兑换处理器", "Handler", "处理产品兑换和订单")
+        Component(pointsHandler, "积分处理器", "Handler", "处理积分查询")
+        Component(adminHandlers, "管理员处理器", "Handler", "处理管理员功能")
+        
+        Component(authMiddleware, "认证中间件", "Middleware", "JWT验证和用户识别")
+        Component(roleMiddleware, "角色中间件", "Middleware", "权限验证")
+        Component(i18nMiddleware, "国际化中间件", "Middleware", "语言识别")
+        
+        Component(authService, "认证服务", "Service", "身份认证和JWT管理")
+        Component(userService, "用户服务", "Service", "用户管理业务逻辑")
+        Component(productService, "产品服务", "Service", "产品和库存管理")
+        Component(redemptionService, "兑换服务", "Service", "兑换流程和订单管理")
+        Component(pointsService, "积分服务", "Service", "积分计算和交易")
+        Component(notificationService, "通知服务", "Service", "邮件通知")
+        Component(i18nService, "国际化服务", "Service", "多语言和位置识别")
+        
+        Component(userRepo, "用户仓储", "Repository", "用户数据访问")
+        Component(productRepo, "产品仓储", "Repository", "产品数据访问")
+        Component(orderRepo, "订单仓储", "Repository", "订单数据访问")
+        Component(pointsRepo, "积分仓储", "Repository", "积分交易数据访问")
+    }
+
+    Rel(webApp, authHandler, "调用", "JSON/HTTPS")
+    Rel(webApp, userHandler, "调用", "JSON/HTTPS")
+    Rel(webApp, productHandler, "调用", "JSON/HTTPS")
+    Rel(webApp, redemptionHandler, "调用", "JSON/HTTPS")
+    Rel(webApp, pointsHandler, "调用", "JSON/HTTPS")
+    Rel(webApp, adminHandlers, "调用", "JSON/HTTPS")
+    
+    Rel(authHandler, authMiddleware, "使用")
+    Rel(userHandler, authMiddleware, "使用")
+    Rel(productHandler, authMiddleware, "使用")
+    Rel(redemptionHandler, authMiddleware, "使用")
+    Rel(pointsHandler, authMiddleware, "使用")
+    Rel(adminHandlers, roleMiddleware, "使用")
+    
+    Rel(authHandler, authService, "调用")
+    Rel(userHandler, userService, "调用")
+    Rel(productHandler, productService, "调用")
+    Rel(redemptionHandler, redemptionService, "调用")
+    Rel(pointsHandler, pointsService, "调用")
+    Rel(adminHandlers, userService, "调用")
+    Rel(adminHandlers, productService, "调用")
+    Rel(adminHandlers, pointsService, "调用")
+    
+    Rel(authService, userRepo, "使用")
+    Rel(userService, userRepo, "使用")
+    Rel(productService, productRepo, "使用")
+    Rel(redemptionService, orderRepo, "使用")
+    Rel(redemptionService, productRepo, "使用")
+    Rel(redemptionService, userRepo, "使用")
+    Rel(pointsService, pointsRepo, "使用")
+    Rel(pointsService, userRepo, "使用")
+    
+    Rel(userRepo, database, "读写", "SQL")
+    Rel(productRepo, database, "读写", "SQL")
+    Rel(orderRepo, database, "读写", "SQL")
+    Rel(pointsRepo, database, "读写", "SQL")
+    
+    Rel(notificationService, emailSystem, "发送邮件", "SMTP")
+    Rel(i18nService, ipGeoService, "查询位置", "HTTPS")
+    Rel(i18nMiddleware, i18nService, "使用")
+    Rel(redemptionService, notificationService, "使用")
+    Rel(pointsService, notificationService, "使用")
+    
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
+```
+
+### 原有系统架构图（三层架构视图）
 
 系统采用三层架构：
 

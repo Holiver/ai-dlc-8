@@ -1,0 +1,90 @@
+{
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "reset": "Reset",
+    "submit": "Submit",
+    "back": "Back",
+    "loading": "Loading...",
+    "success": "Operation successful",
+    "error": "Operation failed",
+    "noData": "No data available"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "loginSuccess": "Login successful",
+    "loginFailed": "Login failed",
+    "invalidCredentials": "Invalid email or password"
+  },
+  "nav": {
+    "products": "Products",
+    "redemptions": "Redemption History",
+    "points": "Points History",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "userManagement": "User Management",
+    "productManagement": "Product Management",
+    "pointsManagement": "Points Management",
+    "orderManagement": "Order Management",
+    "reports": "Reports"
+  },
+  "product": {
+    "name": "Product Name",
+    "image": "Product Image",
+    "points": "Points Required",
+    "stock": "Stock Quantity",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "soldOut": "Sold Out",
+    "redeem": "Redeem",
+    "redeemConfirm": "Confirm redemption of this product?",
+    "redeemSuccess": "Redemption successful",
+    "redeemFailed": "Redemption failed",
+    "insufficientPoints": "Insufficient points",
+    "insufficientStock": "Insufficient stock"
+  },
+  "points": "Points",
+  "pointsBalance": "Points Balance",
+  "pointsHistory": "Points History",
+  "redemptionHistory": "Redemption History",
+  "order": {
+    "orderNumber": "Order Number",
+    "productName": "Product Name",
+    "pointsCost": "Points Cost",
+    "status": "Order Status",
+    "preparing": "Preparing",
+    "delivered": "Delivered",
+    "createdAt": "Created At"
+  },
+  "user": {
+    "fullName": "Full Name",
+    "email": "Email",
+    "phone": "Phone",
+    "role": "Role",
+    "employee": "Employee",
+    "admin": "Administrator",
+    "createUser": "Create User Account",
+    "updatePhone": "Update Phone",
+    "setInactive": "Set Inactive"
+  },
+  "admin": {
+    "createProduct": "Create Product",
+    "updateProduct": "Update Product",
+    "batchImport": "Batch Import",
+    "grantPoints": "Grant Points",
+    "deductPoints": "Deduct Points",
+    "batchGrant": "Batch Grant",
+    "updateOrderStatus": "Update Order Status",
+    "batchUpdate": "Batch Update",
+    "exportReport": "Export Report"
+  }
+}

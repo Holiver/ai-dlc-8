@@ -1,0 +1,26 @@
+server:
+  port: "8080"
+  mode: "debug"
+
+database:
+  host: "localhost"
+  port: "3306"
+  user: "root"
+  password: "password"
+  dbname: "awsome_shop"
+  charset: "utf8mb4"
+
+jwt:
+  secret: "your-secret-key-change-in-production"
+  expirehours: 24
+
+email:
+  smtphost: "smtp.example.com"
+  smtpport: 587
+  username: "noreply@example.com"
+  password: "email-password"
+  from: "AWSomeShop <noreply@example.com>"
+
+ipgeo:
+  apikey: "your-ipgeo-api-key"
+  baseurl: "https://api.ipgeolocation.io"
